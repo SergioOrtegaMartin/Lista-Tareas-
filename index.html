@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="estilos.css">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script src="index.js"></script>
+</head>
+<body>
+    <header id="imagen">
+        <img src="fondo.jpg" alt="fondo">
+    </header>
+    <div id="ejercicio">
+        <input type="text" v-model="nuevatarea" v-on:keyup.enter="add" placeholder="Añadir tarea"> 
+        <input type="text" v-model="busqueda" v-on:keyup="buscar" placeholder="Buscar.."> 
+
+        <h1  v-if ="listatareas.length">Lista de tareas</h1>
+        <table id="tabla">
+            <transition-group name="slide-fade">     
+
+            <tr v-for = "(tareas,index) in listatareas"  :class="{hecha:tareas.hecha}"  v-bind:key="index" >
+            
+              <td>
+                  <li v-on:click="hacer(index)" >{{tareas.nombre}} 
+                      <ul>Prioridad: {{tareas.prioridad == 0 ? "Alta":tareas.prioridad == 1 ? "Media":"Baja"}}  </ul> 
+                      <ul>Fecha: {{tareas.fecha}}</ul>
+                      <ul>Creada hace: {{calculaDiferencia(index)}} minutos</ul>
+                      <!-- <ul>Hecha: {{tareas.hecha}}</ul> -->
+                      <!-- <ul>Creada hace: {{tareas.diferencia}}</ul> -->
+                  </li> 
+              </td>
+              <td> 
+            
+
+                <button v-on:click="borra(index)">Borrar tarea</button> 
+                <button v-on:click="prioridadAlta(index)">Alta</button> 
+                <button v-on:click="prioridadMedia(index)">Media</button>
+                <button v-on:click="prioridadBaja(index)">Baja</button>
+
+                <!-- <button v-on:click="hacer(index)">Hacer tarea</button>   
+                    POR SI QUEREMOS HACERLA DANDOLE A UN BOTON EN VEZ DE PULSANDO SOBRE ELLA -->  
+            </td>
+            </tr>
+          </table>
+        </transition-group>
+<p>
+        <button v-on:click="borrarCompletadas">Borrar completadas</button>
+        <button v-on:click="add">Añadir tarea</button>
+        <button v-on:click="deleteall">Borrar todas</button>
+    </p>
+    <p>
+        Mostrar:
+        <button v-on:click="mostrarTodas">Todas</button>
+        <button v-on:click="mostrarTerminadas">Completadas</button>
+        <button v-on:click="mostrarSinTerminar">Pendientes</button> 
+    </p>
+    <p v-if ="listatareas.length">Hay {{listatareas.length}} tareas en la lista, hay {{hechas}} tareas hechas</p>
+
+
+
+
+    </div>
+
+</body>
+</html>
